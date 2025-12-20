@@ -7,7 +7,6 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token") || "");
 
-  // sempre que o token mudar, guarda no localStorage e mete no axios
   useEffect(() => {
     if (token) {
       localStorage.setItem("token", token);
@@ -22,12 +21,11 @@ export function AuthProvider({ children }) {
     const res = await api.post("/auth/login", { email, password });
     setUser(res.data.user);
     setToken(res.data.token);
-    return res.data; // opcional, mas útil se quiseres usar no componente
+    return res.data; 
   };
 
   const register = async (data) => {
     const res = await api.post("/auth/register", data);
-    // aqui devolvemos a resposta para o componente poder usar
     return res.data;
   };
 

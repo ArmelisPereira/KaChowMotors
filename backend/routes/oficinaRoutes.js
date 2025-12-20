@@ -3,10 +3,10 @@ import { criarOficina, listarOficinas } from "../controllers/oficinaControllers.
 
 const router = express.Router();
 
-// POST /api/oficinas
+
 router.post("/", criarOficina);
 
-// GET /api/oficinas
+
 router.get("/", listarOficinas);
 
 export default router;

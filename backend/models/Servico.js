@@ -1,22 +1,45 @@
-import mongoose from "mongoose";
+import { createContext, useState, useEffect } from "react";
+import api from "../api/api";
 
-const servicoSchema = new mongoose.Schema(
-  {
-    oficina: { type: mongoose.Schema.Types.ObjectId, ref: "Oficina", required: true },
-    nome: { type: String, required: true },
-    tipo: { type: String, required: true },
-    preco: { type: Number, required: true, min: 0 },
-    duracaoMin: { type: Number, required: true, min: 5 },
+export const AuthContext = createContext();
 
-    descricaoPublica: { type: String, default: "" },
-    descricaoPrivada: { type: String, default: "" },
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem("token") || "");
 
-    vagasPorTurno: { type: Number, required: true, min: 1, default: 1 },
-    antecedenciaMinHoras: { type: Number, default: 0 },
 
-    mecanicosAutorizados: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-  },
-  { timestamps: true }
-);
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem("token", token);
+      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    } else {
+      localStorage.removeItem("token");
+      delete api.defaults.headers.common["Authorization"];
+    }
+  }, [token]);
 
-export default mongoose.model("Servico", servicoSchema);
+  const login = async (email, password) => {
+    const res = await api.post("/auth/login", { email, password });
+    setUser(res.data.user);
+    setToken(res.data.token);
+    return res.data; 
+  };
+
+  const register = async (data) => {
+    const res = await api.post("/auth/register", data);
+    return res.data;
+  };
+
+  const logout = () => {
+    setUser(null);
+    setToken("");
+    localStorage.removeItem("token");
+    delete api.defaults.headers.common["Authorization"];
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, token, login, register, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
