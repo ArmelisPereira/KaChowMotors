@@ -2,8 +2,17 @@ import jwt from "jsonwebtoken";
 
 export const authMiddleware = (roles = []) => {
   return (req, res, next) => {
-    const token = req.headers.authorization?.split(" ")[1];
+    if (!process.env.JWT_SECRET) {
+      return res.status(500).json({ msg: "JWT_SECRET não configurado" });
+    }
 
+    const auth = req.headers.authorization;
+
+    if (!auth?.startsWith("Bearer ")) {
+      return res.status(401).json({ msg: "Token não fornecido" });
+    }
+
+    const token = auth.split(" ")[1];
     if (!token) return res.status(401).json({ msg: "Token não fornecido" });
 
     try {
