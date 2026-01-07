@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import OficinaServicosPage from "./pages/OficinaServicosPage";
 import Navbar from "./components/Navbar.jsx";
 import HomePage from "./pages/HomePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
@@ -16,6 +17,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/oficinas" element={<OficinasPage />} />
+          <Route path="/oficinas/:oficinaId/servicos" element={<OficinaServicosPage />} />
         </Routes>
       </main>
     </div>

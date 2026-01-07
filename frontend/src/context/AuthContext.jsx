@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useEffect, useState } from "react";
 import api from "../api/api";
 
 export const AuthContext = createContext();
@@ -6,6 +6,7 @@ export const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token") || "");
+  const [loadingAuth, setLoadingAuth] = useState(true);
 
   useEffect(() => {
     if (token) {
@@ -17,11 +18,32 @@ export function AuthProvider({ children }) {
     }
   }, [token]);
 
+  useEffect(() => {
+    const loadMe = async () => {
+      try {
+        if (!token) {
+          setUser(null);
+          setLoadingAuth(false);
+          return;
+        }
+        const res = await api.get("/auth/me");
+        setUser(res.data.user);
+      } catch (e) {
+        setUser(null);
+        setToken("");
+      } finally {
+        setLoadingAuth(false);
+      }
+    };
+
+    loadMe();
+  }, [token]);
+
   const login = async (email, password) => {
     const res = await api.post("/auth/login", { email, password });
-    setUser(res.data.user);
     setToken(res.data.token);
-    return res.data; 
+    setUser(res.data.user);
+    return res.data;
   };
 
   const register = async (data) => {
@@ -37,7 +59,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, register, logout }}>
+    <AuthContext.Provider value={{ user, token, login, register, logout, loadingAuth }}>
       {children}
     </AuthContext.Provider>
   );
