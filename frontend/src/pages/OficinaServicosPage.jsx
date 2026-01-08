@@ -1,5 +1,5 @@
 import { useContext, useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { getServicosByOficina, createServico } from "../api/servicos";
 
@@ -8,6 +8,7 @@ export default function OficinaServicosPage() {
   const { user } = useContext(AuthContext);
 
   const isAdmin = useMemo(() => user?.role === "admin_oficina", [user]);
+  const isCliente = useMemo(() => user?.role === "cliente", [user]);
 
   const [servicos, setServicos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -64,7 +65,12 @@ export default function OficinaServicosPage() {
         mecanicosAutorizados: [],
       };
 
-      if (!payload.nome || !payload.tipo || Number.isNaN(payload.preco) || Number.isNaN(payload.duracaoMin)) {
+      if (
+        !payload.nome ||
+        !payload.tipo ||
+        Number.isNaN(payload.preco) ||
+        Number.isNaN(payload.duracaoMin)
+      ) {
         setError("Preenche nome, tipo, preço e duração.");
         return;
       }
@@ -88,75 +94,107 @@ export default function OficinaServicosPage() {
     }
   };
 
+  if (loading) return <p>A carregar...</p>;
+
   return (
-    <div style={{ maxWidth: 900, margin: "0 auto", padding: 16 }}>
+    <div className="oficina-servicos">
       <h2>Serviços da Oficina</h2>
 
-      {error ? (
-        <div style={{ background: "#ffe5e5", padding: 12, borderRadius: 8, marginBottom: 12 }}>
-          {error}
-        </div>
-      ) : null}
+      {error && <p className="error">{error}</p>}
 
-      {loading ? <p>A carregar...</p> : null}
+      {servicos.length === 0 && <p>Sem serviços ainda.</p>}
 
-      {!loading && servicos.length === 0 ? <p>Sem serviços ainda.</p> : null}
-
-      <div style={{ display: "grid", gap: 12, marginTop: 12 }}>
+      <ul className="servicos-list">
         {servicos.map((s) => (
-          <div key={s._id} style={{ border: "1px solid #ddd", borderRadius: 10, padding: 12 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-              <div>
-                <h3 style={{ margin: 0 }}>{s.nome}</h3>
-                <p style={{ margin: "6px 0", opacity: 0.8 }}>{s.tipo}</p>
-              </div>
-              <div style={{ textAlign: "right" }}>
-                <div><strong>{Number(s.preco).toFixed(2)}€</strong></div>
-                <div style={{ opacity: 0.8 }}>{s.duracaoMin} min</div>
-              </div>
-            </div>
+          <li key={s._id} className="servico-card">
+            <h3>{s.nome}</h3>
+            <p>{s.tipo}</p>
+            <p>{Number(s.preco).toFixed(2)} €</p>
+            <p>{s.duracaoMin} min</p>
 
-            {s.descricaoPublica ? <p style={{ marginTop: 10 }}>{s.descricaoPublica}</p> : null}
+            {s.descricaoPublica && <p>{s.descricaoPublica}</p>}
 
-            <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 8, opacity: 0.85 }}>
-              <span>Vagas/turno: {s.vagasPorTurno}</span>
-              <span>Antecedência: {s.antecedenciaMinHoras}h</span>
-            </div>
+            <p>
+              Vagas/turno: {s.vagasPorTurno} | Antecedência:{" "}
+              {s.antecedenciaMinHoras}h
+            </p>
 
-            {isAdmin && s.descricaoPrivada ? (
-              <div style={{ marginTop: 10, padding: 10, background: "#f6f6f6", borderRadius: 8 }}>
+            {isCliente && (
+              <Link to={`/oficinas/${oficinaId}/servicos/${s._id}/marcar`}>
+                Marcar
+              </Link>
+            )}
+
+            {isAdmin && s.descricaoPrivada && (
+              <div className="nota-admin">
                 <strong>Nota interna:</strong>
-                <div>{s.descricaoPrivada}</div>
+                <p>{s.descricaoPrivada}</p>
               </div>
-            ) : null}
-          </div>
+            )}
+          </li>
         ))}
-      </div>
+      </ul>
 
-      {isAdmin ? (
-        <div style={{ marginTop: 28 }}>
+      {isAdmin && (
+        <section className="criar-servico">
           <h3>Criar novo serviço</h3>
-          <form onSubmit={onSubmit} style={{ display: "grid", gap: 10, border: "1px solid #ddd", padding: 12, borderRadius: 10 }}>
-            <input name="nome" value={form.nome} onChange={onChange} placeholder="Nome" />
-            <input name="tipo" value={form.tipo} onChange={onChange} placeholder="Tipo (ex: Manutenção)" />
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-              <input name="preco" value={form.preco} onChange={onChange} placeholder="Preço (€)" />
-              <input name="duracaoMin" value={form.duracaoMin} onChange={onChange} placeholder="Duração (min)" />
-            </div>
+          <form onSubmit={onSubmit}>
+            <input
+              name="nome"
+              value={form.nome}
+              onChange={onChange}
+              placeholder="Nome"
+            />
+            <input
+              name="tipo"
+              value={form.tipo}
+              onChange={onChange}
+              placeholder="Tipo"
+            />
+            <input
+              name="preco"
+              value={form.preco}
+              onChange={onChange}
+              placeholder="Preço"
+            />
+            <input
+              name="duracaoMin"
+              value={form.duracaoMin}
+              onChange={onChange}
+              placeholder="Duração (min)"
+            />
 
-            <textarea name="descricaoPublica" value={form.descricaoPublica} onChange={onChange} placeholder="Descrição pública" rows={3} />
-            <textarea name="descricaoPrivada" value={form.descricaoPrivada} onChange={onChange} placeholder="Descrição privada (admin)" rows={2} />
+            <textarea
+              name="descricaoPublica"
+              value={form.descricaoPublica}
+              onChange={onChange}
+              placeholder="Descrição pública"
+            />
+            <textarea
+              name="descricaoPrivada"
+              value={form.descricaoPrivada}
+              onChange={onChange}
+              placeholder="Descrição privada"
+            />
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-              <input name="vagasPorTurno" value={form.vagasPorTurno} onChange={onChange} placeholder="Vagas por turno" />
-              <input name="antecedenciaMinHoras" value={form.antecedenciaMinHoras} onChange={onChange} placeholder="Antecedência mínima (horas)" />
-            </div>
+            <input
+              name="vagasPorTurno"
+              value={form.vagasPorTurno}
+              onChange={onChange}
+              placeholder="Vagas por turno"
+            />
+            <input
+              name="antecedenciaMinHoras"
+              value={form.antecedenciaMinHoras}
+              onChange={onChange}
+              placeholder="Antecedência mínima (h)"
+            />
 
             <button type="submit">Criar serviço</button>
           </form>
-        </div>
-      ) : null}
+        </section>
+      )}
     </div>
   );
 }

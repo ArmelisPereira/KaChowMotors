@@ -12,9 +12,25 @@ export default function Navbar() {
           <span className="lightning">⚡</span>
           <span>RayoGarage</span>
         </div>
+
         <Link to="/" className="navbar-link">
           Home
         </Link>
+
+        <Link to="/oficinas" className="navbar-link">
+          Oficinas
+        </Link>
+
+        {user?.role === "cliente" && (
+          <>
+            <Link to="/minhas-marcacoes" className="navbar-link">
+              Minhas Marcações
+            </Link>
+            <Link to="/meus-veiculos" className="navbar-link">
+              Meus Veículos
+            </Link>
+          </>
+        )}
       </div>
 
       <div className="navbar-right">
@@ -32,9 +48,6 @@ export default function Navbar() {
             </Link>
             <Link to="/register" className="navbar-link">
               Registo
-            </Link>
-            <Link to="/oficinas" className="navbar-link">
-              Oficinas
             </Link>
           </>
         )}

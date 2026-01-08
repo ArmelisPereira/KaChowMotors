@@ -61,3 +61,13 @@ export const apagarServico = async (req, res) => {
     res.status(500).json({ msg: "Erro ao apagar serviço", error: e.message });
   }
 };
+
+export const obterServico = async (req, res) => {
+  try {
+    const s = await Servico.findById(req.params.id);
+    if (!s) return res.status(404).json({ msg: "Serviço não encontrado" });
+    res.json(s);
+  } catch (error) {
+    res.status(500).json({ msg: "Erro ao obter serviço", error: error.message });
+  }
+};
