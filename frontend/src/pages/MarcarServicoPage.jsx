@@ -25,7 +25,7 @@ export default function MarcarServicoPage() {
     veiculo: "",
     turno: "",
     data: "",
-    hora: ""
+    hora: "",
   });
 
   const load = async () => {
@@ -36,7 +36,7 @@ export default function MarcarServicoPage() {
       const [servRes, turnosRes, veicRes] = await Promise.all([
         api.get(`/servicos/${servicoId}`),
         getTurnosByOficina(oficinaId, { servicoId }),
-        getMyVeiculos()
+        getMyVeiculos(),
       ]);
 
       setServico(servRes.data);
@@ -49,7 +49,7 @@ export default function MarcarServicoPage() {
         veiculo: veicRes.data?.[0]?._id || "",
         turno: firstTurno?._id || "",
         data: firstTurno?.data || "",
-        hora: firstTurno?.horaInicio || ""
+        hora: firstTurno?.horaInicio || "",
       }));
     } catch (e) {
       setError(e?.response?.data?.msg || "Erro ao carregar dados para marcação");
@@ -72,7 +72,7 @@ export default function MarcarServicoPage() {
       setForm((p) => ({
         ...p,
         data: selectedTurno.data,
-        hora: selectedTurno.horaInicio
+        hora: selectedTurno.horaInicio,
       }));
     }
   }, [form.turno]);
@@ -104,7 +104,7 @@ export default function MarcarServicoPage() {
         servico: servicoId,
         turno: form.turno,
         data: form.data,
-        hora: form.hora
+        hora: form.hora,
       });
 
       navigate("/minhas-marcacoes");
@@ -115,11 +115,11 @@ export default function MarcarServicoPage() {
     }
   };
 
-  if (loadingAuth) return <p style={{ padding: 16 }}>A carregar sessão...</p>;
+  if (loadingAuth) return <p>A carregar sessão...</p>;
 
   if (!user) {
     return (
-      <div style={{ padding: 16 }}>
+      <div className="login-required">
         <p>Tens de fazer login para marcar um serviço.</p>
         <button onClick={() => navigate("/login")}>Ir para Login</button>
       </div>
@@ -128,82 +128,73 @@ export default function MarcarServicoPage() {
 
   if (!isCliente) {
     return (
-      <div style={{ padding: 16 }}>
+      <div className="login-required">
         <p>Esta página é só para clientes.</p>
       </div>
     );
   }
 
   return (
-    <div style={{ maxWidth: 900, margin: "0 auto", padding: 16 }}>
+    <div className="marcar-servico">
       <h2>Marcar Serviço</h2>
 
-      {error ? (
-        <div style={{ background: "#ffe5e5", padding: 12, borderRadius: 8, marginBottom: 12 }}>
-          {error}
-        </div>
-      ) : null}
+      {error && <p className="error">{error}</p>}
 
-      {loading ? <p>A carregar...</p> : null}
+      {loading && <p>A carregar...</p>}
 
       {!loading && servico ? (
-        <div style={{ border: "1px solid #ddd", borderRadius: 10, padding: 12, marginBottom: 14 }}>
-          <h3 style={{ margin: 0 }}>{servico.nome}</h3>
-          <p style={{ margin: "6px 0", opacity: 0.85 }}>{servico.tipo}</p>
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", opacity: 0.85 }}>
-            <span>{Number(servico.preco).toFixed(2)}€</span>
-            <span>{servico.duracaoMin} min</span>
-          </div>
-          {servico.descricaoPublica ? <p style={{ marginTop: 10 }}>{servico.descricaoPublica}</p> : null}
+        <div className="card" style={{ marginBottom: 12 }}>
+          <h3>{servico.nome}</h3>
+          <p>{servico.tipo}</p>
+          <p>
+            {Number(servico.preco).toFixed(2)}€ • {servico.duracaoMin} min
+          </p>
+          {servico.descricaoPublica ? <p>{servico.descricaoPublica}</p> : null}
         </div>
       ) : null}
 
       {!loading && veiculos.length === 0 ? (
-        <div style={{ padding: 12, border: "1px solid #ddd", borderRadius: 10 }}>
+        <div className="card">
           <p>Não tens veículos registados. Cria um veículo antes de marcar.</p>
           <button onClick={() => navigate("/meus-veiculos")}>Ir para Veículos</button>
         </div>
       ) : null}
 
       {!loading && veiculos.length > 0 ? (
-        <form onSubmit={onSubmit} style={{ display: "grid", gap: 10, border: "1px solid #ddd", padding: 12, borderRadius: 10 }}>
-          <label>
-            Veículo
-            <select name="veiculo" value={form.veiculo} onChange={onChange} style={{ width: "100%", marginTop: 6 }}>
-              {veiculos.map((v) => (
-                <option key={v._id} value={v._id}>
-                  {v.matricula} — {v.marca} {v.modelo}
-                </option>
-              ))}
-            </select>
-          </label>
+        <div className="card">
+          <form onSubmit={onSubmit}>
+            <label>
+              Veículo
+              <select name="veiculo" value={form.veiculo} onChange={onChange}>
+                {veiculos.map((v) => (
+                  <option key={v._id} value={v._id}>
+                    {v.matricula} — {v.marca} {v.modelo}
+                  </option>
+                ))}
+              </select>
+            </label>
 
-          <label>
-            Turno
-            <select name="turno" value={form.turno} onChange={onChange} style={{ width: "100%", marginTop: 6 }}>
-              {turnos.map((t) => (
-                <option key={t._id} value={t._id}>
-                  {t.data} — {t.horaInicio} às {t.horaFim} (vagas: {t.vagasTotal})
-                </option>
-              ))}
-            </select>
-          </label>
+            <label>
+              Turno
+              <select name="turno" value={form.turno} onChange={onChange}>
+                {turnos.map((t) => (
+                  <option key={t._id} value={t._id}>
+                    {t.data} — {t.horaInicio} às {t.horaFim} (vagas: {t.vagasTotal})
+                  </option>
+                ))}
+              </select>
+            </label>
 
-          <label>
-            Hora (dentro do turno)
-            <input
-              name="hora"
-              value={form.hora}
-              onChange={onChange}
-              placeholder="HH:mm"
-              style={{ width: "100%", marginTop: 6 }}
-            />
-          </label>
+            <label>
+              Hora (dentro do turno)
+              <input name="hora" value={form.hora} onChange={onChange} placeholder="HH:mm" />
+            </label>
 
-          <button type="submit" disabled={submitting}>
-            {submitting ? "A marcar..." : "Confirmar Marcação"}
-          </button>
-        </form>
+            <button type="submit" disabled={submitting}>
+              {submitting ? "A marcar..." : "Confirmar Marcação"}
+            </button>
+          </form>
+        </div>
       ) : null}
     </div>
   );

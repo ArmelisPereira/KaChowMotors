@@ -417,3 +417,303 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+.login-required {
+  max-width: 420px;
+  margin: 80px auto;
+  padding: 32px 24px;
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  text-align: center;
+}
+
+.login-required p {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.login-required button {
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.login-required button:hover {
+  opacity: 0.9;
+}
+.oficina-servicos {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.oficina-servicos h2 {
+  margin: 0 0 14px 0;
+}
+
+.oficina-servicos h3 {
+  margin: 22px 0 12px 0;
+}
+
+.servicos-list {
+  list-style: none;
+  padding: 0;
+  margin: 14px 0 0 0;
+  display: grid;
+  gap: 12px;
+}
+
+.servico-card {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.servico-card h3 {
+  margin: 0 0 6px 0;
+}
+
+.servico-card p {
+  margin: 6px 0;
+  opacity: 0.9;
+}
+
+.servico-card a {
+  display: inline-block;
+  margin-top: 8px;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.nota-admin {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 1212px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.nota-admin p {
+  margin: 6px 0 0 0;
+  opacity: 0.9;
+}
+
+.criar-servico {
+  margin-top: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.criar-servico form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.criar-servico input,
+.criar-servico textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.25);
+  color: inherit;
+  outline: none;
+}
+
+.criar-servico input::placeholder,
+.criar-servico textarea::placeholder {
+  opacity: 0.75;
+}
+
+.criar-servico textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.criar-servico textarea[name="descricaoPublica"],
+.criar-servico textarea[name="descricaoPrivada"] {
+  grid-column: 1 / -1;
+}
+
+.criar-servico button {
+  grid-column: 1 / -1;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 0;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.criar-servico button:hover {
+  opacity: 0.92;
+}
+
+@media (max-width: 720px) {
+  .criar-servico form {
+    grid-template-columns: 1fr;
+  }
+}
+
+.marcar-servico {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.marcar-servico h2 {
+  margin: 0 0 14px 0;
+}
+
+.marcar-servico .card {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.marcar-servico form {
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.marcar-servico label {
+  display: grid;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.marcar-servico select,
+.marcar-servico input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.25);
+  color: inherit;
+  outline: none;
+}
+
+.marcar-servico input::placeholder {
+  opacity: 0.75;
+}
+
+.marcar-servico button {
+  margin-top: 6px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 0;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.marcar-servico button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.marcar-servico .error {
+  margin-top: 10px;
+}
+
+.turnos-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.turnos-page h2 {
+  margin: 0 0 14px 0;
+}
+
+.card {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.turnos-filtros {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.turno-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.turnos-page label {
+  display: grid;
+  gap: 6px;
+  font-weight: 600;
+}
+
+.turnos-page select,
+.turnos-page input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.25);
+  color: inherit;
+  outline: none;
+}
+
+.turnos-page input::placeholder {
+  opacity: 0.75;
+}
+
+.turnos-list {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0 0 0;
+  display: grid;
+  gap: 10px;
+}
+
+.turno-card {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.turno-card button {
+  border: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.tag {
+  margin-left: 10px;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+@media (max-width: 820px) {
+  .turnos-filtros {
+    grid-template-columns: 1fr;
+  }
+  .turno-form {
+    grid-template-columns: 1fr;
+  }
+}

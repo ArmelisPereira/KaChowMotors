@@ -7,7 +7,10 @@ export const listarTurnosPorOficina = async (req, res) => {
 
     const query = { oficina: oficinaId };
     if (data) query.data = data;
-    if (servicoId) query.servico = servicoId;
+
+    if (servicoId) {
+      query.$or = [{ servico: servicoId }, { servico: null }];
+    }
 
     const turnos = await Turno.find(query).sort({ data: 1, horaInicio: 1 });
     res.json(turnos);
@@ -15,6 +18,7 @@ export const listarTurnosPorOficina = async (req, res) => {
     res.status(500).json({ msg: "Erro ao listar turnos", error: error.message });
   }
 };
+
 
 export const criarTurno = async (req, res) => {
   try {

@@ -93,10 +93,11 @@ export default function MeusVeiculosPage() {
 
   if (!user) {
     return (
-      <div className="meus-veiculos">
-        <p>Tens de fazer login.</p>
-        <button onClick={() => navigate("/login")}>Login</button>
-      </div>
+  <div className="login-required">
+  <p>Tens de fazer login.</p>
+  <button onClick={() => navigate("/login")}>Login</button>
+</div>
+
     );
   }
 

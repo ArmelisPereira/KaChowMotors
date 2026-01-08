@@ -31,6 +31,13 @@ export default function Navbar() {
             </Link>
           </>
         )}
+
+        {user?.role === "admin_oficina" && (
+          <Link to="/turnos" className="navbar-link">
+            Turnos
+          </Link>
+        )}
+
       </div>
 
       <div className="navbar-right">
