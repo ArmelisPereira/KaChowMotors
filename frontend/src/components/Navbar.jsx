@@ -38,6 +38,14 @@ export default function Navbar() {
           </Link>
         )}
 
+
+        {user?.role === "admin_oficina" || user?.role === "mecanico" ? (
+          <Link to="/turnos/marcacao" className="navbar-link">  {/* Mudar link para /turnos/marcacao */}
+            Gerir Marcações
+          </Link>
+        ) : null}
+
+
       </div>
 
       <div className="navbar-right">

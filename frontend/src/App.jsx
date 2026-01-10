@@ -8,9 +8,10 @@ import OficinasPage from "./pages/OficinasPage.jsx";
 import MarcarServicoPage from "./pages/MarcarServicoPage";
 import MinhasMarcacoesPage from "./pages/MinhasMarcacoesPage.jsx";
 import MeusVeiculosPage from "./pages/MeusVeiculosPage.jsx";
-import TurnosPage from "./pages/TurnosPage.jsx";
+import TurnosPage from "./pages/TurnosPage.jsx"; // Página de administração de turnos
+import TurnosMarcaPage from "./pages/TurnosMarcaPage.jsx"; // Gerenciar marcações do turno
 
-import "./index.css"
+import "./index.css";
 
 function App() {
   return (
@@ -26,8 +27,8 @@ function App() {
           <Route path="/oficinas/:oficinaId/servicos/:servicoId/marcar" element={<MarcarServicoPage />} />
           <Route path="/minhas-marcacoes" element={<MinhasMarcacoesPage />} />
           <Route path="/meus-veiculos" element={<MeusVeiculosPage />} />
-          <Route path="/turnos" element={<TurnosPage />} />
-          <Route path="/meus-veiculos" element={<div>TODO</div>} />
+          <Route path="/turnos" element={<TurnosPage />} /> {/* Página de gestão de turnos */}
+          <Route path="/turnos/marcacao/:marcacaoId" element={<TurnosMarcaPage />} /> {/* Página de gestão de marcações */}
         </Routes>
       </main>
     </div>

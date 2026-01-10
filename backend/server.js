@@ -10,6 +10,7 @@ import veiculoRoutes from "./routes/veiculoRoutes.js";
 import turnoRoutes from "./routes/turnoRoutes.js";
 import marcacaoRoutes from "./routes/marcacaoRoutes.js";
 
+
 dotenv.config();
 
 const app = express();

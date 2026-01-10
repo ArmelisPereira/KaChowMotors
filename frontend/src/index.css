@@ -717,3 +717,83 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+.turnos-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+
+.turnos-page h2 {
+  margin: 0 0 14px 0;
+}
+
+.card {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.filters {
+  display: flex;
+  gap: 12px;
+}
+
+.filters label {
+  font-weight: 600;
+}
+
+.filters input,
+.filters select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.turnos-list {
+  list-style: none;
+  padding: 0;
+  margin: 14px 0;
+  display: grid;
+  gap: 12px;
+}
+
+.turno-card {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.turno-card p {
+  margin: 6px 0;
+  opacity: 0.85;
+}
+
+.turno-card button {
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.turno-card button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error {
+  background: rgba(255, 0, 0, 0.15);
+  padding: 12px;
+  border-radius: 8px;
+}
+
+@media (max-width: 720px) {
+  .filters {
+    flex-direction: column;
+  }
+}

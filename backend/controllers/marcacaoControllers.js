@@ -181,3 +181,25 @@ export const atualizarEstadoMarcacao = async (req, res) => {
     res.status(500).json({ msg: "Erro ao atualizar estado", error: e.message });
   }
 };
+
+
+export const listarMarcacaoPorId = async (req, res) => {
+  try {
+    const { marcacaoId } = req.params;
+
+    const marcacao = await Marcacao.findById(marcacaoId)
+      .populate("cliente", "name email")
+      .populate("servico", "nome tipo preco duracaoMin")
+      .populate("veiculo", "marca modelo matricula")
+      .populate("turno", "data horaInicio horaFim")
+      .populate("mecanico", "name email");
+
+    if (!marcacao) {
+      return res.status(404).json({ msg: "Marcação não encontrada" });
+    }
+
+    res.json(marcacao);
+  } catch (e) {
+    res.status(500).json({ msg: "Erro ao carregar marcação", error: e.message });
+  }
+};
