@@ -27,8 +27,12 @@ function App() {
           <Route path="/oficinas/:oficinaId/servicos/:servicoId/marcar" element={<MarcarServicoPage />} />
           <Route path="/minhas-marcacoes" element={<MinhasMarcacoesPage />} />
           <Route path="/meus-veiculos" element={<MeusVeiculosPage />} />
-          <Route path="/turnos" element={<TurnosPage />} /> {/* Página de gestão de turnos */}
-          <Route path="/turnos/marcacao/:marcacaoId" element={<TurnosMarcaPage />} /> {/* Página de gestão de marcações */}
+
+          {/* Página de Turnos */}
+          <Route path="/turnos" element={<TurnosPage />} />
+
+          {/* Página de Gerir Marcações */}
+          <Route path="/turnos/marcacao/:marcacaoId" element={<TurnosMarcaPage />} />
         </Routes>
       </main>
     </div>

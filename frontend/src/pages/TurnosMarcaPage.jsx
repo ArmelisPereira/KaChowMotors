@@ -1,12 +1,12 @@
-import { useContext, useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { useNavigate, useParams } from "react-router-dom";
 import api from "../api/api";
 
 export default function TurnosMarcaPage() {
+  const { marcacaoId } = useParams(); // Captura o ID da marcação da URL
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const { marcacaoId } = useParams(); // Pega o ID da marcação da URL
 
   const [marcacao, setMarcacao] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -17,8 +17,8 @@ export default function TurnosMarcaPage() {
       setLoading(true);
       setError("");
 
-      const res = await api.get(`/marcacoes/${marcacaoId}`);
-      setMarcacao(res.data); // Preenche o estado com os dados da marcação
+      const res = await api.get(`/marcacoes/${marcacaoId}`); // Requisição para obter os detalhes da marcação
+      setMarcacao(res.data); // Atualiza o estado com os dados da marcação
     } catch (e) {
       setError(e?.response?.data?.msg || "Erro ao carregar marcação");
     } finally {
@@ -28,7 +28,7 @@ export default function TurnosMarcaPage() {
 
   useEffect(() => {
     if (marcacaoId) {
-      loadMarcacao();
+      loadMarcacao(); // Carregar os dados da marcação ao mudar o ID
     }
   }, [marcacaoId]);
 
