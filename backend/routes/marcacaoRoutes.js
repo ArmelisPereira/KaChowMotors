@@ -6,27 +6,21 @@ import {
   cancelarMarcacao,
   listarMarcacoesOficina,
   atualizarEstadoMarcacao,
-  listarMarcacaoPorId, // Nova função para buscar marcação específica
+  reagendarMarcacao,
+  listarMarcacaoPorId
 } from "../controllers/marcacaoControllers.js";
 
 const router = express.Router();
 
-// Rota para criar marcação (apenas cliente)
+// cliente
 router.post("/", authMiddleware(["cliente"]), criarMarcacao);
-
-// Rota para listar as marcações do cliente
 router.get("/me", authMiddleware(["cliente"]), listarMinhasMarcacoes);
-
-// Rota para cancelar marcação (apenas cliente)
 router.patch("/:id/cancelar", authMiddleware(["cliente"]), cancelarMarcacao);
+router.patch("/:id/reagendar", authMiddleware(["cliente"]), reagendarMarcacao);
 
-// Rota para listar marcações da oficina (admin_oficina ou mecânico)
+// admin/mecanico
 router.get("/oficina/:oficinaId", authMiddleware(["admin_oficina", "mecanico"]), listarMarcacoesOficina);
-
-// Rota para listar uma marcação específica pelo ID
-router.get("/:marcacaoId", authMiddleware(["admin_oficina", "mecanico", "cliente"]), listarMarcacaoPorId);
-
-// Rota para atualizar o estado da marcação (admin_oficina ou mecânico)
 router.patch("/:id/estado", authMiddleware(["admin_oficina", "mecanico"]), atualizarEstadoMarcacao);
+router.get("/:marcacaoId", authMiddleware(["admin_oficina", "mecanico"]), listarMarcacaoPorId);
 
 export default router;
